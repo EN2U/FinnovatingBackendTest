@@ -8,4 +8,3 @@ class Establishment(models.Model):
     name = models.CharField(max_length=256)
     rating = models.PositiveSmallIntegerField()
     description = models.TextField()
-    updated_at = models.DateTimeField(auto_now=True)

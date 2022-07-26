@@ -10,6 +10,7 @@ black = "*"
 isort = "*"
 python-decouple = "*"
 graphene-django = "*"
+graphql-core = "*"
 
 [dev-packages]
 
