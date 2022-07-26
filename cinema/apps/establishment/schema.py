@@ -26,11 +26,18 @@ class Query(graphene.ObjectType):
         EstablishmentType, name=graphene.String(required=True)
     )
 
+    establishment_by_direction = graphene.List(
+        EstablishmentType, name=graphene.String(required=True)
+    )
+
     def resolve_all_establishment(root, info):
         return Establishment.objects.all()
 
     def resolve_establishment_by_name(root, info, name):
         return Establishment.objects.filter(name__icontains=name)
+
+    def resolve_establishment_by_direction(root, info, direction):
+        return Establishment.objects.filter(direction__icontains=direction)
 
 
 schema = graphene.Schema(query=Query)
