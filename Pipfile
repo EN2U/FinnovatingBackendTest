@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 black = "*"
 isort = "*"
 python-decouple = "*"
+graphene-django = "*"
 
 [dev-packages]
 
