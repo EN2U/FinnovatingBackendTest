@@ -4,9 +4,6 @@ from graphene_django import DjangoObjectType
 from .models import Establishment
 
 
-print(":)")
-
-
 class EstablishmentType(DjangoObjectType):
     class Meta:
         model = Establishment
