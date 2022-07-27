@@ -1,6 +1,10 @@
 import graphene
 from graphene_django import DjangoObjectType
 
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
+
+
 from .models import Movie
 from cinema.apps.establishment.models import Establishment
 
@@ -60,9 +64,12 @@ class CreateMovie(graphene.Mutation):
     movie = graphene.Field(MovieType)
 
     def mutate(self, info, movie_data=None):
-        establishment_instance = Establishment.objects.get(
-            pk=movie_data.cinema
-        )
+        try:
+            establishment_instance = Establishment.objects.get(
+                pk=movie_data.cinema
+            )
+        except ObjectDoesNotExist:
+            raise Exception("The cinema does not have this film")
 
         movie_instance = Movie(
             title=movie_data.title,
@@ -75,6 +82,7 @@ class CreateMovie(graphene.Mutation):
         )
 
         movie_instance.save()
+
         return CreateMovie(movie=movie_instance)
 
 
@@ -95,7 +103,10 @@ class UpdateMovie(graphene.Mutation):
         if movie_data:
             for key, value in movie_data.items():
                 if key == "cinema":
-                    value = Establishment.objects.get(pk=movie_data.cinema)
+                    try:
+                        value = Establishment.objects.get(pk=movie_data.cinema)
+                    except ObjectDoesNotExist:
+                        raise Exception("The cinema does not have this film")
                 setattr(movie_instance, key, value)
 
             movie_instance.save()
