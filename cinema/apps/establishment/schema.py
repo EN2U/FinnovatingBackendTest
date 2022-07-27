@@ -84,6 +84,20 @@ class UpdateEstablishment(graphene.Mutation):
         return UpdateEstablishment(establishment=None)
 
 
+class DeleteEstablishment(graphene.Mutation):
+    class Arguments:
+        establishment_id = graphene.ID()
+
+    establishment = graphene.Field(EstablishmentType)
+
+    def mutate(root, info, establishment_id):
+        establishment_instance = Establishment.objects.get(pk=establishment_id)
+        establishment_instance.delete()
+
+        return None
+
+
 class Mutation(graphene.ObjectType):
     create_establishment = CreateEstablishment.Field()
     update_establishment = UpdateEstablishment.Field()
+    delete_establishment = DeleteEstablishment.Field()
