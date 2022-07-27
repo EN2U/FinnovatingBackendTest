@@ -58,7 +58,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "cinema.urls"
 
-GRAPHENE = {"SCHEMA": "cinema.apps.establishment.schema.schema"}
+GRAPHENE = {"SCHEMA": "cinema.schema.schema"}
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
