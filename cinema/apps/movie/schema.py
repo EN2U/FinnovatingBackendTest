@@ -103,6 +103,24 @@ class UpdateMovie(graphene.Mutation):
         return UpdateMovie(movie=None)
 
 
+class DeleteMovie(graphene.Mutation):
+    class Arguments:
+        movie_keys = MovieKeysInput(required=True)
+
+    movie = graphene.Field(MovieType)
+
+    def mutate(root, info, movie_keys):
+        movie_instance = Movie.objects.get(
+            title=movie_keys.title,
+            director=movie_keys.director,
+            category=movie_keys.category,
+        )
+        movie_instance.delete()
+
+        return None
+
+
 class Mutation(graphene.ObjectType):
     create_movie = CreateMovie.Field()
     update_movie = UpdateMovie.Field()
+    delete_movie = DeleteMovie.Field()
