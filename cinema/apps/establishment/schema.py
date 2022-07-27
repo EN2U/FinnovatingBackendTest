@@ -4,6 +4,13 @@ from graphene_django import DjangoObjectType
 from .models import Establishment
 
 
+class EstablishmentInput(graphene.InputObjectType):
+    direction = graphene.String()
+    name = graphene.String()
+    rating = graphene.Int()
+    description = graphene.String()
+
+
 class EstablishmentType(DjangoObjectType):
     class Meta:
         model = Establishment
@@ -37,4 +44,23 @@ class Query(graphene.ObjectType):
         return Establishment.objects.filter(direction__icontains=direction)
 
 
-schema = graphene.Schema(query=Query)
+class CreateEstablishment(graphene.Mutation):
+    class Arguments:
+        establishment_data = EstablishmentInput(required=True)
+
+    establishment = graphene.Field(EstablishmentType)
+
+    def mutate(self, info, establishment_data=None):
+        establishment_instance = Establishment(
+            name=establishment_data.name,
+            rating=establishment_data.rating,
+            description=establishment_data.description,
+            direction=establishment_data.direction,
+        )
+
+        establishment_instance.save()
+        return CreateEstablishment(establishment=establishment_instance)
+
+
+class Mutation(graphene.ObjectType):
+    create_establishment = CreateEstablishment.Field()

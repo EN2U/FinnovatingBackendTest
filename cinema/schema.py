@@ -1,10 +1,14 @@
 import graphene
-from cinema.apps.establishment.schema import Query as EstablishmentQuery
-from cinema.apps.movie.schema import Query as MovieQuery
+import cinema.apps.establishment.schema as EstablishmentSchema
+import cinema.apps.movie.schema as MovieSchema
 
 
-class GlobalQuery(EstablishmentQuery, MovieQuery):
+class GlobalQuery(EstablishmentSchema.Query, MovieSchema.Query):
     pass
 
 
-schema = graphene.Schema(query=GlobalQuery)
+class GlobalMutation(EstablishmentSchema.Mutation):
+    pass
+
+
+schema = graphene.Schema(query=GlobalQuery, mutation=GlobalMutation)
