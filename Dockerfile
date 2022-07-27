@@ -12,6 +12,5 @@ RUN pip install --upgrade pip
 COPY ./requirements/requirements.txt .
 RUN pip install -r requirements.txt
 
-RUN ls
 # copy project
 COPY . .
