@@ -8,3 +8,11 @@ class Establishment(models.Model):
     name = models.CharField(max_length=256)
     rating = models.PositiveSmallIntegerField()
     description = models.TextField()
+
+    class meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["direction", "name"],
+                name="unique_direction_name",
+            )
+        ]

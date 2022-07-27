@@ -17,7 +17,7 @@ class Movie(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["title", "director", "category"],
-                name="unique_title_director_category_combination",
+                fields=["title", "director", "category", "cinema"],
+                name="unique_title_director_category_combination_cinema",
             )
         ]

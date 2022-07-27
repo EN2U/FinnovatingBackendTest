@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
 psycopg2-binary = "*"
 black = "*"
 isort = "*"
 python-decouple = "*"
 graphene-django = "*"
 graphql-core = "*"
+django = "==3.2.14"
 
 [dev-packages]
 
