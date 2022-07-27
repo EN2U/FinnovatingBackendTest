@@ -15,6 +15,12 @@ class MovieInput(graphene.InputObjectType):
     cinema = graphene.ID()
 
 
+class MovieKeysInput(graphene.InputObjectType):
+    title = graphene.String()
+    category = graphene.String()
+    director = graphene.String()
+
+
 class MovieType(DjangoObjectType):
     class Meta:
         model = Movie
@@ -72,5 +78,31 @@ class CreateMovie(graphene.Mutation):
         return CreateMovie(movie=movie_instance)
 
 
+class UpdateMovie(graphene.Mutation):
+    class Arguments:
+        movie_data = MovieInput(required=True)
+        movie_keys = MovieKeysInput(required=True)
+
+    movie = graphene.Field(MovieType)
+
+    def mutate(self, info, movie_data=None, movie_keys=None):
+        movie_instance = Movie.objects.get(
+            title=movie_keys.title,
+            director=movie_keys.director,
+            category=movie_keys.category,
+        )
+
+        if movie_data:
+            for key, value in movie_data.items():
+                if key == "cinema":
+                    value = Establishment.objects.get(pk=movie_data.cinema)
+                setattr(movie_instance, key, value)
+
+            movie_instance.save()
+            return UpdateMovie(movie=movie_instance)
+        return UpdateMovie(movie=None)
+
+
 class Mutation(graphene.ObjectType):
     create_movie = CreateMovie.Field()
+    update_movie = UpdateMovie.Field()

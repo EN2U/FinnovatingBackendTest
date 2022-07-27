@@ -7,7 +7,7 @@ class GlobalQuery(EstablishmentSchema.Query, MovieSchema.Query):
     pass
 
 
-class GlobalMutation(MovieSchema.Mutation):
+class GlobalMutation(EstablishmentSchema.Mutation, MovieSchema.Mutation):
     pass
 
 
